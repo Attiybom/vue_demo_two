@@ -1,21 +1,26 @@
 <template>
   <div class="home">
-    <h1>home-view</h1>
+    <FileUploadComponent />
   </div>
 </template>
 
 <script>
+import FileUploadComponent from '../components/FileUpload/FileUploadComponent'
+
 export default {
+  components: {
+    FileUploadComponent,
+  },
   data() {
     return {
 
     };
   },
+  methods: {
+
+  },
   created() {
 
   },
-
 };
 </script>
-<style scoped>
-</style>

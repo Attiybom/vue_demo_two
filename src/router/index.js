@@ -5,21 +5,26 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: () => import('../views/HomeView.vue')
+    path: "/",
+    name: "home",
+    component: () => import("../views/HomeView.vue"),
   },
   {
-    path: '/three',
-    name: 'three',
-    component: () => import('../views/ThreeDemo.vue')
+    path: "/three",
+    name: "three",
+    component: () => import("../views/ThreeDemo.vue"),
   },
   {
-    path: '/cascader',
-    name: 'cascader',
-    component: () => import('../views/CascaderDemo.vue')
+    path: "/cascader",
+    name: "cascader",
+    component: () => import("../views/CascaderDemo.vue"),
   },
-]
+  {
+    path: "/dialog",
+    name: "dialog",
+    component: () => import("../views/DialogDemo.vue"),
+  },
+];
 
 const router = new VueRouter({
   mode: 'history',
