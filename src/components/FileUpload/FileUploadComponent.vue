@@ -111,11 +111,13 @@ export default {
       const fileSize = fileObj.size;
       console.log('fileSize', fileSize)
       const limitSize = 10 * 1024;
-      let currentSize = 0;
-
+      let currentSize = localStorage.setItem(fileObj.name, currentSize) || 0;
+      localStorage.setItem(fileObj.name, currentSize)
       while (currentSize < fileSize) {
+        const _formData = new FormData()
+        _formData.append(fileObj.name, fileObj.slice(currentSize, currentSize + limitSize))
         await fileUploadService(
-          fileObj.slice(currentSize, currentSize + limitSize)
+          _formData
         );
         currentSize += limitSize;
         // 超过100， 取100

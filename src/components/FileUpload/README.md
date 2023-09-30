@@ -46,14 +46,45 @@ fileChange(e) {
       // 切片上传 - 单文件为例
       // 对文件进行切片
       // fileObj 为 获取到的文件实例
-      const fileSize = fileObj.size
-      const limitSize = 10  * 1024
-      let currentSize = 0
+      // 切片上传 - 单文件为例
+      // 对文件进行切片
+      // fileObj 为 获取到的文件实例
+      const fileSize = fileObj.size;
+      const limitSize = 10 * 1024;
+      let currentSize = 0;
 
       while (currentSize < fileSize) {
-        await fileUploadService(fileObj.slice(currentSize, currentSize + limitSize))
-        currentSize += limitSize
+        // 用formData加载，同时并给他追加名字以便后端识别，后端根据名字拼接到一起
+        const _formData = new FormData()
+        _formData.append(fileObj.name, fileObj.slice(currentSize, currentSize + limitSize))
+        await fileUploadService(
+          _formData
+        );
+        currentSize += limitSize;
         // 超过100， 取100
-        this.percentage = Math.min((currentSize / fileSize) * 100, 100)
+        this.percentage = Math.min((currentSize / fileSize) * 100, 100);
+      }
+```
+
+
+### 断点续传
+```js
+      const fileSize = fileObj.size;
+      const limitSize = 10 * 1024;
+
+
+      // 这里通过对currentSize进行持久化，下次就能知道上次的进度
+      let currentSize = localStorage.setItem(fileObj.name, currentSize) || 0;
+      localStorage.setItem(fileObj.name, currentSize)
+
+
+      while (currentSize < fileSize) {
+        const _formData = new FormData()
+        _formData.append(fileObj.name, fileObj.slice(currentSize, currentSize + limitSize))
+        await fileUploadService(
+          _formData
+        );
+        currentSize += limitSize;
+        this.percentage = Math.min((currentSize / fileSize) * 100, 100);
       }
 ```
