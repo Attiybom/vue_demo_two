@@ -84,19 +84,21 @@ export default {
       const temp = this.categoryRespList.filter(
         (item) => item.type === "service"
       );
-      const groupedItems = {};
 
-      temp.forEach((item) => {
-        const { topCode, Name } = item;
+      const obj = {}
 
-        if (!groupedItems[topCode]) {
-          groupedItems[topCode] = { ...item, Names: [Name] };
+      temp.forEach(item => {
+        const { topCode, Name} = item
+
+        if (!obj[topCode]) {
+          obj[topCode] = { ...item, Names: [Name]}
         } else {
-          groupedItems[topCode].Names.push(Name);
+          obj[topCode].Names.push(Name)
         }
-      });
-      const mergedServiceList = Object.values(groupedItems);
-      return mergedServiceList;
+
+      })
+      const newTemp = Object.values(obj)
+      return newTemp;
     },
     goodsList() {
       let temp = this.categoryRespList.filter((item) => {
