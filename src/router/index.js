@@ -24,6 +24,11 @@ const routes = [
     name: "dialog",
     component: () => import("../views/DialogDemo.vue"),
   },
+  {
+    path: "/classTable",
+    name: "classTable",
+    component: () => import("../views/ClassTableDemo.vue"),
+  },
 ];
 
 const router = new VueRouter({
