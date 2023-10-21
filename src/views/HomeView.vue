@@ -2,6 +2,7 @@
   <div class="home">
     <div>
       <button @click="toCascader">跳转cascader</button>
+      <button @click="() => this.$router.push('/formDemo')">formDemo</button>
     </div>
     <Divider />
     <div>

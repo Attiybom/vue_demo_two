@@ -20,13 +20,25 @@
             </el-tag>
           </div>
         </el-tab-pane>
+        <!-- <template v-for="(category, index) in categoryRespList">
+          <el-tab-pane
+            :key="index"
+            :name="category.type"
+            :label="category.type"
+          >
+            <span v-for='children in category.topNames' :key='children'>{{ children.topName }}</span>
+            <el-tag v-for="children in category.Names" :key="children">
+              {{ children.Name }}
+            </el-tag>
+          </el-tab-pane>
+        </template> -->
       </el-tabs>
     </div>
   </div>
 </template>
 
 <script>
-import { getTabData } from '@/services/tabs';
+import { getTabData } from "@/services/tabs";
 
 export default {
   data() {
@@ -76,7 +88,7 @@ export default {
       //     Name: "饮料",
       //   },
       // ],
-      categoryRespList: []
+      categoryRespList: [],
     };
   },
   computed: {
@@ -96,6 +108,7 @@ export default {
         }
       });
       const mergedServiceList = Object.values(groupedItems);
+      console.log('mergedServiceList', mergedServiceList)
       return mergedServiceList;
     },
     goodsList() {
@@ -118,10 +131,32 @@ export default {
     },
   },
   mounted() {
-    getTabData().then(res => {
+    getTabData().then((res) => {
       // console.log('res', res)
-      this.categoryRespList = res.tabData
-    })
+      this.categoryRespList = res.tabData;
+      // const obj = {};
+      // this.categoryRespList.forEach((item) => {
+      //   const { type, topName, Name, Code } = item;
+
+      //   if (!obj[type]) {
+      //     obj[type] = { ...item, Codes: [], Names: [], topNames: [] };
+      //   }
+
+      //   if (!obj[type].topNames.includes(topName)) {
+      //     obj[type].topNames.push(topName);
+      //   }
+
+      //   if (!obj[type].Codes.includes(Code)) {
+      //     obj[type].Codes.push(Code);
+      //   }
+      //   if (!obj[type].Names.includes(Name)) {
+      //     obj[type].Names.push(Name);
+      //   }
+      // });
+
+      // const objArr = Object.values(obj);
+      // this.categoryRespList = objArr;
+    });
   },
 };
 </script>
