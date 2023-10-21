@@ -29,6 +29,11 @@ const routes = [
     name: "classTable",
     component: () => import("../views/ClassTableDemo.vue"),
   },
+  {
+    path: "/formDemo",
+    name: "formDemo",
+    component: () => import("../views/FormDemo.vue"),
+  },
 ];
 
 const router = new VueRouter({
