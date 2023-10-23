@@ -34,6 +34,11 @@ const routes = [
     name: "formDemo",
     component: () => import("../views/FormDemo.vue"),
   },
+  {
+    path: "/checkDemo",
+    name: "checkDemo",
+    component: () => import("../views/Demo/CheckDemo.vue"),
+  },
 ];
 
 const router = new VueRouter({
