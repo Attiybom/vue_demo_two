@@ -147,6 +147,7 @@ export default {
   },
   methods: {
     change() {
+      this.$refs.ruleForm.clearValidate();
       // 通过控制表单是否自动校验，切换时先置false，等规则切换完后再切true
       this.flag = false;
       if (this.value === "1") {
