@@ -39,6 +39,16 @@ const routes = [
     name: "checkDemo",
     component: () => import("../views/Demo/CheckDemo.vue"),
   },
+  {
+    path: "/typeDemo",
+    name: "typeDemo",
+    component: () => import("../views/Demo/TypeDemo.vue"),
+  },
+  {
+    path: "/compareDemo",
+    name: "compareDemo",
+    component: () => import("../views/Demo/CompareDemo.vue"),
+  },
 ];
 
 const router = new VueRouter({
