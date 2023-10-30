@@ -20,135 +20,82 @@ export default {
     getSupplierInfoFormDB() {
       const supplierInfoFormDB = this.composeDataFormDB(this.res);
       Object.assign(this.supplierInfoFormDB, supplierInfoFormDB);
+      // console.log('assign', this.supplierInfoFormDB)
     },
     composeDataFormDB(rawData) {
       const cData = {};
       diffAttrList.forEach((item) => {
-        // 检查是否为数组字段
-        if (
-          Array.isArray(item.attrNameOfDB) &&
-          Array.isArray(item.attrNameOfSupplier)
-        ) {
-          const propertiesFromDB = [];
-
-          for (let i = 0; i < item.attrNameOfDB.length; i++) {
-            const dbAttr = item.attrNameOfDB[i];
-            propertiesFromDB.push(rawData[dbAttr] || "");
-          }
-          console.log('item-', item.attrNameOfSupplier)
-          console.log('item-', propertiesFromDB)
-          cData[item.attrNameOfSupplier.join(" - ")] =
-            propertiesFromDB.join(" - ");
+        // 判断是否是字段数组
+        if (Array.isArray(item.attrNameOfDB)) {
+          // 再次循环，单独存储
+          // 由于对比的字段肯定一致，因此只判断其中一个是否是字段数组就可以，也因此只要针对一个循环存储
+          item.attrNameOfDB.forEach((attr) => {
+            cData[attr] = rawData[attr] || "";
+          });
         } else {
           cData[item.attrNameOfSupplier] = rawData[item.attrNameOfDB];
         }
       });
-      console.log('cData', cData)
       return cData;
     },
+
     calculateDiffData() {
-      // 对比数据
       const dataFormSupplierInput = this.dataFormSupplierInput;
       const { supplierInfoFormDB } = this;
 
-      // 异常数据存储
       const diffData = [];
-
       for (const { label, attrNameOfDB, attrNameOfSupplier } of diffAttrList) {
-        // 判断对比字段是否是数组形式
-        const isArrayField =
-          Array.isArray(attrNameOfDB) && Array.isArray(attrNameOfSupplier);
+        let dbValue; // 最后用来存储到diffData
+        let supplierValue;
 
-        // 数组形式(复数字段)
-        if (isArrayField) {
-          console.log("isArrayField", isArrayField);
+        // 先判断字段是否为null 或者对应的值未定义
+        if (
+          supplierInfoFormDB[attrNameOfDB] === undefined ||
+          supplierInfoFormDB[attrNameOfDB === null] ||
+          dataFormSupplierInput[attrNameOfSupplier] === undefined ||
+          dataFormSupplierInput[attrNameOfSupplier === null]
+        ) {
+          continue;
+        } else if (
+          Array.isArray(attrNameOfDB) &&
+          Array.isArray(attrNameOfSupplier)
+        ) {
+          // 把需要对比的两个数组，他们的value存在数组里面
+          const propertiesFromDB = attrNameOfDB.map(
+            (attr) => supplierInfoFormDB[attr] || ""
+          );
+          const propertiesFromSupplier = attrNameOfSupplier.map(
+            (attr) => dataFormSupplierInput[attr] || ""
+          );
 
-          let isDifferent = false; // 标识数组中的字段是否有不同
-          const propertiesFromDB = [];
-          const propertiesFromSupplier = [];
-
-          for (let i = 0; i < attrNameOfDB.length; i++) {
-            const dbAttr = attrNameOfDB[i];
-            const supplierAttr = attrNameOfSupplier[i];
-            propertiesFromDB.push(supplierInfoFormDB[dbAttr] || "");
-            propertiesFromSupplier.push(
-              dataFormSupplierInput[supplierAttr] || ""
-            );
-
-            if (propertiesFromDB[i] !== propertiesFromSupplier[i]) {
-              isDifferent = true;
-            }
-          }
-          if (isDifferent) {
-            diffData.push({
-              diffPropertyName: label,
-              propertyValueFormDB: propertiesFromDB.join(" - "),
-              propertyValueFormSupplier: propertiesFromSupplier.join(" - "),
-            });
-            console.log("propertiesFromDB", propertiesFromDB);
-            console.log("propertiesFromDB", propertiesFromDB);
-          }
-
-          setTimeout(() => {
-            console.log("复述形式", diffData);
-          });
+          // 字段数组
+          // 合并成字符串，这一步看你自己需要对数据进行什么操作改
+          dbValue = propertiesFromDB.join(" - ");
+          supplierValue = propertiesFromSupplier.join(" - ");
         } else {
           // 单个字段
-          console.log(
-            "single",
-            label,
-            supplierInfoFormDB[attrNameOfDB] || "无",
-            dataFormSupplierInput[attrNameOfSupplier]
-          );
-          console.log(
-            "sing-bool",
-            supplierInfoFormDB[attrNameOfDB] !==
-              dataFormSupplierInput[attrNameOfSupplier]
-          );
-          if (
-            supplierInfoFormDB[attrNameOfDB] !==
-            dataFormSupplierInput[attrNameOfSupplier]
-          ) {
-            diffData.push({
-              diffPropertyName: label,
-              propertyValueFormDB: supplierInfoFormDB[attrNameOfDB],
-              propertyValueFormSupplier:
-                dataFormSupplierInput[attrNameOfSupplier],
-            });
-          }
-          setTimeout(() => {
-            console.log("单个形式", diffData);
-          });
-          // 原始对比
-          // if (
-          //   supplierInfoFormDB[attrNameOfDB] === undefined ||
-          //   supplierInfoFormDB[attrNameOfSupplier === null]
-          // ) {
-          //   continue;
-          // }
-          // if (
-          //   dataFormSupplierInput[attrNameOfDB] === undefined ||
-          //   dataFormSupplierInput[attrNameOfSupplier === null]
-          // ) {
-          //   continue;
-          // }
-          // if (
-          //   supplierInfoFormDB[attrNameOfDB] !==
-          //   dataFormSupplierInput[attrNameOfSupplier]
-          // ) {
-          //   diffData.push({
-          //     diffPropertyName: label,
-          //     propertyValueFormDB: supplierInfoFormDB[attrNameOfDB],
-          //     propertyValueFormSupplier:
-          //       dataFormSupplierInput[attrNameOfSupplier],
-          //   });
-          //   this.diffData = diffData;
-          // }
+          // 直接存
+          dbValue = supplierInfoFormDB[attrNameOfDB];
+          supplierValue = dataFormSupplierInput[attrNameOfSupplier];
         }
-        setTimeout(() => {
-          console.log("最后形式", diffData);
-        });
+
+        // 比对，存储
+        if (dbValue !== supplierValue) {
+          // console.log("includes", dbValue.includes(" - "));
+          diffData.push({
+            diffPropertyName: label,
+            propertyValueFormDB: dbValue.includes(" - ")
+              ? dbValue.split(" - ")
+              : dbValue,
+            propertyValueFormSupplier: supplierValue.includes(" - ")
+              ? supplierValue.split(" - ")
+              : supplierValue,
+          });
+        }
       }
+      1;
+      this.diffData = diffData;
+      console.log("finally-diffData", diffData);
     },
   },
   async mounted() {
