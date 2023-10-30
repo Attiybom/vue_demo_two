@@ -14,6 +14,7 @@ export default {
       dataFormSupplierInput,
       // diffAttrList,
       diffData: [],
+      specialAttrArr: ["branchType"],
     };
   },
   methods: {
@@ -76,9 +77,10 @@ export default {
         }
 
         // 对于特定字段branchType，将1转换为"是"，0转换为"否"
+
         if (
-          attrNameOfDB === "branchType" ||
-          attrNameOfSupplier === "branchType"
+          this.specialAttrArr.includes(attrNameOfDB) ||
+          this.specialAttrArr.includes(attrNameOfSupplier)
         ) {
           dbValue = dbValue === 1 ? "是" : "否";
           supplierValue = supplierValue === 1 ? "是" : "否";
