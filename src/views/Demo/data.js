@@ -3,13 +3,15 @@ const res = {
   company: "平安人寿",
   companySimple: "",
   stockDataStart: "",
-  stockData: "2027-11-02 00:00:00",
+  stockData: "",
+  branchType: 1,
 };
 const dataFormSupplierInput = {
   company: "中国人寿",
   companySimple: "中寿",
   stockData: "2027-11-01 00:00:00",
   stockDataStart: "2020-10-01",
+  branchType: 0,
 };
 
 const diffAttrList = [
@@ -27,6 +29,11 @@ const diffAttrList = [
     label: "营业期限",
     attrNameOfDB: ["stockDataStart", "stockData"],
     attrNameOfSupplier: ["stockDataStart", "stockData"],
+  },
+  {
+    label: "是否为分公司",
+    attrNameOfDB: "branchType",
+    attrNameOfSupplier: "branchType",
   },
 ];
 

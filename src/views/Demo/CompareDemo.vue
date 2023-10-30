@@ -1,5 +1,5 @@
 <template>
-  <div>dataconver</div>
+  <div class="container"></div>
 </template>
 
 <script>
@@ -14,6 +14,7 @@ export default {
       dataFormSupplierInput,
       // diffAttrList,
       diffData: [],
+      specialAttrArr: ["branchType"],
     };
   },
   methods: {
@@ -40,15 +41,22 @@ export default {
     },
 
     calculateDiffData() {
-      const dataFormSupplierInput = this.dataFormSupplierInput;
-      const { supplierInfoFormDB } = this;
+      const { supplierInfoFormDB, dataFormSupplierInput } = this;
 
       const diffData = [];
       for (const { label, attrNameOfDB, attrNameOfSupplier } of diffAttrList) {
         let dbValue; // 最后用来存储到diffData
         let supplierValue;
 
-        if (Array.isArray(attrNameOfDB) && Array.isArray(attrNameOfSupplier)) {
+        if (
+          supplierInfoFormDB[attrNameOfDB === null] ||
+          dataFormSupplierInput[attrNameOfSupplier === null]
+        ) {
+          continue;
+        } else if (
+          Array.isArray(attrNameOfDB) &&
+          Array.isArray(attrNameOfSupplier)
+        ) {
           // 把需要对比的两个数组，他们的value存在数组里面
           const propertiesFromDB = attrNameOfDB.map(
             (attr) => supplierInfoFormDB[attr] || ""
@@ -68,21 +76,37 @@ export default {
           supplierValue = dataFormSupplierInput[attrNameOfSupplier];
         }
 
+        // 对于特定字段branchType，将1转换为"是"，0转换为"否"
+
+        if (
+          this.specialAttrArr.includes(attrNameOfDB) ||
+          this.specialAttrArr.includes(attrNameOfSupplier)
+        ) {
+          dbValue = dbValue === 1 ? "是" : "否";
+          supplierValue = supplierValue === 1 ? "是" : "否";
+        }
+
         // 比对，存储
         if (dbValue !== supplierValue) {
           // console.log("includes", dbValue.includes(" - "));
           diffData.push({
             diffPropertyName: label,
-            propertyValueFormDB: dbValue.includes(" - ") ? dbValue.split(" - ") : dbValue,
-            propertyValueFormSupplier: supplierValue.includes(" - ") ? supplierValue.split(" - ") : supplierValue,
+            propertyValueFormDB: dbValue,
+            propertyValueFormSupplier: supplierValue,
           });
         }
-      }1
+      }
+      1;
       this.diffData = diffData;
       console.log("finally-diffData", diffData);
     },
   },
   async mounted() {
+    console.log(
+      "dataFormSupplierInput ",
+      dataFormSupplierInput,
+      this.dataFormSupplierInput
+    );
     await this.getSupplierInfoFormDB();
     await this.calculateDiffData();
   },

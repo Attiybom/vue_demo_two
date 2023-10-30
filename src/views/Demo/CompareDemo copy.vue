@@ -1,5 +1,22 @@
 <template>
-  <div>dataconver</div>
+  <div class="container">
+    <div class="item">
+      <span>公司:</span>
+      <span>{{ dataFormSupplierInput.company }}</span>
+    </div>
+    <div class="item">
+      <span>公司简称:</span>
+      <span>{{ dataFormSupplierInput.companySimple }}</span>
+    </div>
+    <div class="item">
+      <span>经营时间:</span>
+      <span>
+        {{ dataFormSupplierInput?.stockDataStart }}-{{
+          dataFormSupplierInput?.stockData
+        }}
+      </span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,18 +65,12 @@ export default {
         let dbValue; // 最后用来存储到diffData
         let supplierValue;
 
-        // 先判断字段是否为null 或者对应的值未定义
         if (
-          supplierInfoFormDB[attrNameOfDB] === undefined ||
           supplierInfoFormDB[attrNameOfDB === null] ||
-          dataFormSupplierInput[attrNameOfSupplier] === undefined ||
           dataFormSupplierInput[attrNameOfSupplier === null]
         ) {
           continue;
-        } else if (
-          Array.isArray(attrNameOfDB) &&
-          Array.isArray(attrNameOfSupplier)
-        ) {
+        } else if (Array.isArray(attrNameOfDB) && Array.isArray(attrNameOfSupplier)) {
           // 把需要对比的两个数组，他们的value存在数组里面
           const propertiesFromDB = attrNameOfDB.map(
             (attr) => supplierInfoFormDB[attr] || ""
@@ -84,16 +95,11 @@ export default {
           // console.log("includes", dbValue.includes(" - "));
           diffData.push({
             diffPropertyName: label,
-            propertyValueFormDB: dbValue.includes(" - ")
-              ? dbValue.split(" - ")
-              : dbValue,
-            propertyValueFormSupplier: supplierValue.includes(" - ")
-              ? supplierValue.split(" - ")
-              : supplierValue,
+            propertyValueFormDB: dbValue.includes(" - ") ? dbValue.split(" - ") : dbValue,
+            propertyValueFormSupplier: supplierValue.includes(" - ") ? supplierValue.split(" - ") : supplierValue,
           });
         }
-      }
-      1;
+      }1
       this.diffData = diffData;
       console.log("finally-diffData", diffData);
     },
