@@ -18,6 +18,13 @@ export default {
     };
   },
   methods: {
+    toTimestamp(dateString) {
+      if (dateString === "") return "";
+      const date = new Date(dateString);
+      const timestamp = date.getTime() + 8 * 60 * 60 * 1000;
+      return timestamp;
+    },
+
     getSupplierInfoFormDB() {
       const supplierInfoFormDB = this.composeDataFormDB(this.res);
       Object.assign(this.supplierInfoFormDB, supplierInfoFormDB);
@@ -44,7 +51,7 @@ export default {
       const { supplierInfoFormDB, dataFormSupplierInput } = this;
 
       const diffData = [];
-      for (const { label, attrNameOfDB, attrNameOfSupplier } of diffAttrList) {
+      for (let { label, attrNameOfDB, attrNameOfSupplier } of diffAttrList) {
         let dbValue; // 最后用来存储到diffData
         let supplierValue;
 
@@ -58,12 +65,25 @@ export default {
           Array.isArray(attrNameOfSupplier)
         ) {
           // 把需要对比的两个数组，他们的value存在数组里面
-          const propertiesFromDB = attrNameOfDB.map(
-            (attr) => supplierInfoFormDB[attr] || ""
-          );
-          const propertiesFromSupplier = attrNameOfSupplier.map(
-            (attr) => dataFormSupplierInput[attr] || ""
-          );
+          const propertiesFromDB = attrNameOfDB.map((attr) => {
+            // 转时间戳
+            if (attr === "stockDataStart" || attr === "stockData") {
+              const timeAttr = this.toTimestamp(supplierInfoFormDB[attr] || "");
+              return timeAttr;
+            }
+
+            return supplierInfoFormDB[attr] || "";
+          });
+          const propertiesFromSupplier = attrNameOfSupplier.map((attr) => {
+            // 转时间戳
+            if (attr === "stockDataStart" || attr === "stockData") {
+              const timeAttr = this.toTimestamp(
+                dataFormSupplierInput[attr] || ""
+              );
+              return timeAttr;
+            }
+            return dataFormSupplierInput[attr] || "";
+          });
 
           // 字段数组
           // 合并成字符串，这一步看你自己需要对数据进行什么操作改
@@ -76,8 +96,7 @@ export default {
           supplierValue = dataFormSupplierInput[attrNameOfSupplier];
         }
 
-        // 对于特定字段branchType，将1转换为"是"，0转换为"否"
-
+        // 对于特定字段，将1转换为"是"，0转换为"否"
         if (
           this.specialAttrArr.includes(attrNameOfDB) ||
           this.specialAttrArr.includes(attrNameOfSupplier)
@@ -102,11 +121,6 @@ export default {
     },
   },
   async mounted() {
-    console.log(
-      "dataFormSupplierInput ",
-      dataFormSupplierInput,
-      this.dataFormSupplierInput
-    );
     await this.getSupplierInfoFormDB();
     await this.calculateDiffData();
   },
