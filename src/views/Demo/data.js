@@ -40,7 +40,7 @@ const diffAttrList = [
     attrNameOfSupplier: "branchType",
   },
   {
-    label: "身份证",
+    label: "身份证有效期",
     attrNameOfDB: ["idcardStart", "idcardEnd"],
     attrNameOfSupplier: ["idcardStart", "idcardEnd"],
   },
