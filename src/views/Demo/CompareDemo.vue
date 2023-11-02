@@ -18,7 +18,7 @@ export default {
     };
   },
   methods: {
-    toTimestamp(dateString) {
+    toTimestamp(dateString = "") {
       if (dateString === "") return "";
       const date = new Date(dateString);
       const timestamp = date.getTime() + 8 * 60 * 60 * 1000;
@@ -38,7 +38,7 @@ export default {
           // 再次循环，单独存储
           // 由于对比的字段肯定一致，因此只判断其中一个是否是字段数组就可以，也因此只要针对一个循环存储
           item.attrNameOfDB.forEach((attr) => {
-            cData[attr] = rawData[attr] || "";
+            cData[attr] = rawData[attr];
           });
         } else {
           cData[item.attrNameOfSupplier] = rawData[item.attrNameOfDB];
@@ -64,11 +64,23 @@ export default {
           Array.isArray(attrNameOfDB) &&
           Array.isArray(attrNameOfSupplier)
         ) {
+          const dbValues = attrNameOfDB.map((attr) => supplierInfoFormDB[attr]);
+          const supplierValues = attrNameOfSupplier.map(
+            (attr) => dataFormSupplierInput[attr]
+          );
+          //检查数组中是否有null值，如果有，则不进行比较
+          if (
+            dbValues.some((value) => value === null) ||
+            supplierValues.some((value) => value === null)
+          ) {
+            continue;
+          }
+
           // 把需要对比的两个数组，他们的value存在数组里面
           const propertiesFromDB = attrNameOfDB.map((attr) => {
             // 转时间戳
             if (attr === "stockDataStart" || attr === "stockData") {
-              const timeAttr = this.toTimestamp(supplierInfoFormDB[attr] || "");
+              const timeAttr = this.toTimestamp(supplierInfoFormDB[attr]);
               return timeAttr;
             }
 
@@ -77,9 +89,7 @@ export default {
           const propertiesFromSupplier = attrNameOfSupplier.map((attr) => {
             // 转时间戳
             if (attr === "stockDataStart" || attr === "stockData") {
-              const timeAttr = this.toTimestamp(
-                dataFormSupplierInput[attr] || ""
-              );
+              const timeAttr = this.toTimestamp(dataFormSupplierInput[attr]);
               return timeAttr;
             }
             return dataFormSupplierInput[attr] || "";
