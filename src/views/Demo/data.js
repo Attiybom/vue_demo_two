@@ -2,9 +2,11 @@
 const res = {
   company: "平安人寿",
   companySimple: "",
-  stockDataStart: "",
-  stockData: "",
+  stockDataStart: null,
+  stockData: null,
   branchType: 1,
+  idcardStart: null,
+  idcardEnd: null,
 };
 const dataFormSupplierInput = {
   company: "中国人寿",
@@ -12,6 +14,8 @@ const dataFormSupplierInput = {
   stockData: "2027-11-01 00:00:00",
   stockDataStart: "2020-10-01",
   branchType: 0,
+  idcardStart: "1990-07-09",
+  idcardEnd: "2025-07-09",
 };
 
 const diffAttrList = [
@@ -34,6 +38,11 @@ const diffAttrList = [
     label: "是否为分公司",
     attrNameOfDB: "branchType",
     attrNameOfSupplier: "branchType",
+  },
+  {
+    label: "身份证有效期",
+    attrNameOfDB: ["idcardStart", "idcardEnd"],
+    attrNameOfSupplier: ["idcardStart", "idcardEnd"],
   },
 ];
 

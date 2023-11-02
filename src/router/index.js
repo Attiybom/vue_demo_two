@@ -49,6 +49,11 @@ const routes = [
     name: "compareDemo",
     component: () => import("../views/Demo/CompareDemo.vue"),
   },
+  {
+    path: "/axiosDemo",
+    name: "axiosDemo",
+    component: () => import("../views/AxiosDemo.vue"),
+  },
 ];
 
 const router = new VueRouter({
