@@ -1,8 +1,10 @@
 <template>
   <div class="home">
-    <div>
-      <button @click="toCascader">跳转cascader</button>
-      <button @click="() => this.$router.push('/formDemo')">formDemo</button>
+    <div class="link-container">
+      <router-link to="three">ThreeDemo</router-link>
+      <router-link to="cascader">cascader</router-link>
+      <router-link to="dialog">dialog</router-link>
+      <router-link to="classTable">classTable</router-link>
     </div>
     <Divider />
     <div>
@@ -36,3 +38,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+</style>
