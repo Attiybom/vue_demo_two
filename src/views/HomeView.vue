@@ -5,6 +5,7 @@
       <router-link to="cascader">cascader</router-link>
       <router-link to="dialog">dialog</router-link>
       <router-link to="classTable">classTable</router-link>
+      <router-link to="pagDemo">pag-demo</router-link>
     </div>
     <Divider />
     <div>

@@ -52,7 +52,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
     ::v-deep .clearPadding .vxe-cell {
       padding: 0;
     }
@@ -106,4 +106,4 @@ export default {
         }
       }
     }
-    </style>
+    </style> -->
