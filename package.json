@@ -9,9 +9,12 @@
   },
   "dependencies": {
     "@vue/composition-api": "^1.7.2",
+    "attiybom-generate-table-tool": "^1.0.7",
     "axios": "^1.5.0",
+    "copy-webpack-plugin": "^12.0.1",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
+    "libpag": "^4.2.84",
     "vue": "^2.6.14",
     "vue-router": "^3.5.2"
   },
@@ -25,7 +28,8 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "unplugin-vue2-script-setup": "^0.11.4",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "wasm-loader": "^1.3.0"
   },
   "eslintConfig": {
     "root": true,
