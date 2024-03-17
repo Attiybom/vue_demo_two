@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'TextImageComponent',
   props: {
     displayText: {
       type: String,
