@@ -1,12 +1,10 @@
 <template>
-  <div class="img">
-    <div class="img-container">
-      <div v-show="!imageVisible" @click="toggleImage">
-        {{ displayText }}
-      </div>
-      <el-image ref="previewImage" v-show="imageVisible" style="width: 100px; height: 100px" :src="url" fit="fill"
-        @click="toggleImage" :preview-src-list="urlList"></el-image>
+  <div class="img-container">
+    <div class="text-container" v-show="!imageVisible" @click="toggleImage">
+      {{ displayText }}
     </div>
+    <el-image ref="previewImage" v-show="imageVisible" style="width: 100px; height: 100px" :src="url" fit="fill"
+      @click="toggleImage" :preview-src-list="urlList"></el-image>
   </div>
 </template>
 
@@ -16,7 +14,8 @@ export default {
   props: {
     displayText: {
       type: String,
-      default: '默认图片'
+      required: true,
+      default: ''
     },
     url: {
       type: String,
@@ -51,4 +50,22 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 200px;
+  border: 1px solid #ccc;
+}
+
+.text-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+</style>
