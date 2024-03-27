@@ -63,6 +63,11 @@ const routes = [
     path: "/ImgDemo",
     name: "ImgDemo",
     component: () => import("../views/Demo/ImgDemo.vue"),
+  },
+  {
+    path: "/tagDemo",
+    name: "tagDemo",
+    component: () => import("../views/CheckDemo/CheckDemo.vue"),
   }
 ];
 
