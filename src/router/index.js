@@ -68,6 +68,16 @@ const routes = [
     path: "/tagDemo",
     name: "tagDemo",
     component: () => import("../views/CheckDemo/CheckDemo.vue"),
+  },
+  {
+    path: '/rolePage',
+    name: 'rolePage',
+    component: () => import('../views/RolePage.vue')
+  },
+  {
+    path: '/SelectDropdown',
+    name: 'SelectDropdown',
+    component: () => import('../views/CheckDemo/SelectDropdown.vue')
   }
 ];
 
